@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import "../global.css";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { QueryProvider } from "@/components/providers/query-provider";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,15 +56,31 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen
-          name="(home)"
-          options={{
-            title: "Home",
-            headerTitleAlign: "center",
-          }}
-        />
-      </Stack>
+      <QueryProvider>
+        <Stack>
+          <Stack.Screen
+            name="(home)"
+            options={{
+              title: "Home",
+              headerTitleAlign: "center",
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/sign-in/index"
+            options={{
+              title: "Sign In",
+              headerTitleAlign: "center",
+            }}
+          />
+          <Stack.Screen
+            name="(auth)/sign-up/index"
+            options={{
+              title: "Sign Up",
+              headerTitleAlign: "center",
+            }}
+          />
+        </Stack>
+      </QueryProvider>
     </ThemeProvider>
   );
 }
