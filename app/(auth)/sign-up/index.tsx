@@ -1,14 +1,21 @@
 import Animated from "react-native-reanimated";
 import { WebView } from "react-native-webview";
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 
 import { Session } from "@/types";
 import { useSession } from "@/store/use-session";
 import { SIGN_UP_URL } from "@/constants/api.constants";
 
-const HomeScreen = () => {
+const SignUpScreen = () => {
   const router = useRouter();
-  const { setSession } = useSession((state) => state);
+  const { setSession, session } = useSession((state) => state);
+
+  useEffect(() => {
+    if (session !== null) {
+      router.replace("/(private)/account");
+    }
+  }, [session]);
 
   const BASE_WEBVIEW_URL = process.env.EXPO_PUBLIC_BASE_WEBVIEW_URL;
 
@@ -19,13 +26,10 @@ const HomeScreen = () => {
         source={{ uri: `${BASE_WEBVIEW_URL}${SIGN_UP_URL}` }}
         onMessage={(event) => {
           setSession(JSON.parse(event.nativeEvent.data) as Session);
-          setTimeout(() => {
-            router.navigate("/(home)");
-          }, 1);
         }}
       />
     </Animated.View>
   );
 };
 
-export default HomeScreen;
+export default SignUpScreen;

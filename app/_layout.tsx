@@ -21,7 +21,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(home)",
+  initialRouteName: "(auth)/sign-in/index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -59,13 +59,6 @@ function RootLayoutNav() {
       <QueryProvider>
         <Stack>
           <Stack.Screen
-            name="(home)"
-            options={{
-              title: "Home",
-              headerTitleAlign: "center",
-            }}
-          />
-          <Stack.Screen
             name="(auth)/sign-in/index"
             options={{
               title: "Sign In",
@@ -73,9 +66,23 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
+            name="(home)/index"
+            options={{
+              title: "Home",
+              headerTitleAlign: "center",
+            }}
+          />
+          <Stack.Screen
             name="(auth)/sign-up/index"
             options={{
               title: "Sign Up",
+              headerTitleAlign: "center",
+            }}
+          />
+          <Stack.Screen
+            name="(private)/account/index"
+            options={{
+              title: "Account",
               headerTitleAlign: "center",
             }}
           />

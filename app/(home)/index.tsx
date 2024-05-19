@@ -1,37 +1,29 @@
+import React, { useEffect } from "react";
 import Animated from "react-native-reanimated";
-import { Link } from "expo-router";
+import { useRootNavigationState, useRouter } from "expo-router";
 
 import { useSession } from "@/store/use-session";
-import { useGraphQL } from "@/hooks/use-graphql";
-
-import { GetSelfByNameDocument } from "@/gql/graphql";
 
 const HomeScreen = () => {
+  const rootNavigationState = useRootNavigationState();
   const { session } = useSession((state) => state);
+  const router = useRouter();
 
-  console.log("session", session?.user?.slugName);
+  useEffect(() => {
+    if (!!rootNavigationState?.key) {
+      if (session) {
+        router.navigate("/(private)/account/");
+      } else {
+        router.navigate("/(auth)/sign-in");
+      }
+    }
+  }, [session, !rootNavigationState?.key]);
 
-  const { data } = useGraphQL(GetSelfByNameDocument, {
-    input: { name: session?.user?.slugName || "" },
-  });
-  const self = data?.data?.getSelfByName || null;
+  if (!rootNavigationState?.key) {
+    return null;
+  }
 
-  console.log("self", self);
-
-  return (
-    <Animated.View className="flex-1">
-      <Link href="/(auth)/sign-in" className="mx-8 mt-8">
-        <Animated.Text className="text-xl text-blue-700 underline">
-          Sign In
-        </Animated.Text>
-      </Link>
-      <Link href="/(auth)/sign-up" className="mx-8 mt-4">
-        <Animated.Text className="text-xl text-blue-700 underline">
-          Sign Up
-        </Animated.Text>
-      </Link>
-    </Animated.View>
-  );
+  return <Animated.View></Animated.View>;
 };
 
 export default HomeScreen;

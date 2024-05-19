@@ -1,0 +1,3 @@
+- [ ] store session in async localstorage
+- [ ] get the session from localstorage 
+- [ ] based on the session switch to (private)/ or (auth)/
