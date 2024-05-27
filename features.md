@@ -1,3 +1,4 @@
-- [ ] store session in async localstorage
-- [ ] get the session from localstorage 
-- [ ] based on the session switch to (private)/ or (auth)/
+- [x] store session in async localstorage
+- [x] get the session from localstorage 
+- [x] based on the session switch to (private)/ or (auth)/
+- [x] check webview clear cookie on logout

@@ -27,6 +27,8 @@ const SignInScreen = () => {
         onMessage={(event) => {
           setSession(JSON.parse(event.nativeEvent.data) as Session);
         }}
+        sharedCookiesEnabled={true}
+        thirdPartyCookiesEnabled={true}
       />
     </Animated.View>
   );

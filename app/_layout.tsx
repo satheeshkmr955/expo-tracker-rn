@@ -14,6 +14,10 @@ import "../global.css";
 import { useColorScheme } from "@/components/useColorScheme";
 import { QueryProvider } from "@/components/providers/query-provider";
 
+if (process.env.NODE_ENV !== "production") {
+  require("../ReactotronConfig");
+}
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -59,23 +63,9 @@ function RootLayoutNav() {
       <QueryProvider>
         <Stack>
           <Stack.Screen
-            name="(auth)/sign-in/index"
-            options={{
-              title: "Sign In",
-              headerTitleAlign: "center",
-            }}
-          />
-          <Stack.Screen
             name="(home)/index"
             options={{
               title: "Home",
-              headerTitleAlign: "center",
-            }}
-          />
-          <Stack.Screen
-            name="(auth)/sign-up/index"
-            options={{
-              title: "Sign Up",
               headerTitleAlign: "center",
             }}
           />

@@ -1,19 +1,18 @@
+import { useEffect } from "react";
 import Animated from "react-native-reanimated";
 import { WebView } from "react-native-webview";
 import { useRouter } from "expo-router";
-import { useEffect } from "react";
 
-import { Session } from "@/types";
 import { useSession } from "@/store/use-session";
-import { SIGN_UP_URL } from "@/constants/api.constants";
+import { SIGN_OUT_URL } from "@/constants/api.constants";
 
-const SignUpScreen = () => {
+const SignInScreen = () => {
   const router = useRouter();
-  const { setSession, session } = useSession((state) => state);
+  const { clearSession, session } = useSession((state) => state);
 
   useEffect(() => {
-    if (session !== null) {
-      router.replace("/(private)/account");
+    if (session === null) {
+      router.replace("/(auth)/sign-in/");
     }
   }, [session]);
 
@@ -23,9 +22,9 @@ const SignUpScreen = () => {
     <Animated.View className="flex-1">
       <WebView
         style={{ flex: 1 }}
-        source={{ uri: `${BASE_WEBVIEW_URL}${SIGN_UP_URL}` }}
-        onMessage={(event) => {
-          setSession(JSON.parse(event.nativeEvent.data) as Session);
+        source={{ uri: `${BASE_WEBVIEW_URL}${SIGN_OUT_URL}` }}
+        onMessage={() => {
+          clearSession();
         }}
         sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}
@@ -34,4 +33,4 @@ const SignUpScreen = () => {
   );
 };
 
-export default SignUpScreen;
+export default SignInScreen;

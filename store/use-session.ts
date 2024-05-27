@@ -1,6 +1,23 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { StateStorage, createJSONStorage, devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { persist } from "zustand/middleware";
+import { MMKV } from "react-native-mmkv";
+
+export const sessionStorage = new MMKV();
+
+const zustandStorage: StateStorage = {
+  setItem: (name, value) => {
+    return sessionStorage.set(name, value);
+  },
+  getItem: (name) => {
+    const value = sessionStorage.getString(name);
+    return value ?? null;
+  },
+  removeItem: (name) => {
+    return sessionStorage.delete(name);
+  },
+};
 
 import type {} from "@redux-devtools/extension";
 import { Session } from "@/types";
@@ -13,14 +30,17 @@ interface SessionStore {
 
 export const useSession = create<SessionStore>()(
   devtools(
-    immer((set) => ({
-      session: null,
-      setSession: (session) => set(() => ({ session })),
-      clearSession: () => set(() => ({ session: null })),
-    })),
-    {
-      name: "session",
-      // enabled: process.env.NODE_ENV !== "production",
-    }
+    persist(
+      immer((set) => ({
+        session: null,
+        setSession: (session) => set(() => ({ session })),
+        clearSession: () => set(() => ({ session: null })),
+      })),
+      {
+        name: "session",
+        storage: createJSONStorage(() => zustandStorage),
+        // enabled: process.env.NODE_ENV !== "production",
+      }
+    )
   )
 );
